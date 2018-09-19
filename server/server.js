@@ -9,7 +9,17 @@ var  app = express();
 const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
+//GET todos
 
+app.get("/todos",(req,res)=>{
+    Todo.find().toArray().then((todos)=>{
+       res.status(200).send({todos});
+    },(err)=>{
+        console.log(err);
+        res.status(400).send(err);
+    });
+});
+//POST /todos
 app.post("/todos",(req,res)=>{
     //console.log(req.body);
     var todo = new Todo({

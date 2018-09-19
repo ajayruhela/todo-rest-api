@@ -23,7 +23,7 @@ it('should create a new todo',(done)=>{
   request(app)
   .post('/todos')
   .send({text})
-  .expec(200)
+  .expect(200)
   .expect((res)=>{
       expect(res.body.text).toBe(text);
   })
@@ -55,3 +55,22 @@ it('should not create todo with invalid body data', (done) => {
       });
   });
 });
+//Get tests
+
+describe('GET /todos',()=>{
+
+    it('should get all todos',(done)=>{
+      
+      request(app)
+      .get('/todos')
+      .send()
+      .expect(200)
+      .end((err,res)=>{
+          if(err){
+              return done(err);
+          }
+          expect(res.body.todos.length).toBe(countTodos);
+           done();
+          }).catch(e=>done(e));
+      });
+    });
