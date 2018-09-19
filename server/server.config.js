@@ -1,0 +1,1 @@
+module.exports.todoApp_dbUri = "mongodb://V03W1111:lIcUwLJ9jGG4I115@c1-shard-00-00-wiiu6.gcp.mongodb.net:27017,c1-shard-00-01-wiiu6.gcp.mongodb.net:27017,c1-shard-00-02-wiiu6.gcp.mongodb.net:27017/TodoApp?ssl=true&replicaSet=C1-shard-0&authSource=admin&retryWrites=true";
