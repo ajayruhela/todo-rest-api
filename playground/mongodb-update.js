@@ -11,9 +11,7 @@ MongoClient.connect (uri, {useNewUrlParser :true},(err, client) =>{
         console.log('connected to db');
   //find and update
 client.db("RestAPIDB").collection("todos").findOneAndUpdate({task:'eat lunch'},{$set:{
-                                                                                        completed:true
-                                                                                    }
-                                                                                    },
+                                                                                        completed:true}},
                                                                                     {
                                                                                         returnOriginal:false
                                                                                     }).then((result)=>{
@@ -22,7 +20,16 @@ client.db("RestAPIDB").collection("todos").findOneAndUpdate({task:'eat lunch'},{
                                                                                         console.log(err);
                                                                                     });
 
-
+// update using inc
+client.db("RestAPIDB").collection("todos").findOneAndUpdate({task:'eat lunch'},{$inc:{
+                                                                                        age:1}},
+                                                                                    {
+                                                                                        returnOriginal:false
+                                                                                    }).then((result)=>{
+                                                                                        console.log(result);
+                                                                                    },(err)=>{
+                                                                                        console.log(err);
+                                                                                    });
 
    client.close();
     }
