@@ -4,8 +4,8 @@
   "description": "node todo api",
   "main": "index.js",
   "scripts": {
-    "test": "mocha server /**/*.test.js",
-    "test-watch": "nodemone --exec \"npm test\""
+    "test": "mocha ./server/**/*.test.js",
+    "test-watch": "nodemon --exec \"npm test\""
   },
   "author": "Ajay",
   "license": "ISC",
