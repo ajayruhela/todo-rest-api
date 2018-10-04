@@ -5,9 +5,12 @@ const {app} = require('../server');
 const{Todo} = require('../models/todo');
 var countTodos =0;
 
-// beforeEach((done)=>{
-//   Todo.deleteMany().then((res)=>{done()},(err)=>{done(err)})
-// });
+const todos = [{text:'First test todo'},{text:'Second test todo'}];
+beforeEach((done)=>{
+  Todo.deleteMany({}).then(()=>{
+      return Todo.insertMany(todos)
+    }).then(()=>done())
+});
 
 describe('POST /todos',()=>{
 
@@ -26,8 +29,10 @@ it('should create a new todo',(done)=>{
       if(err){
           return done(err);
       }
-    console.log(res.body);
-    done();
+      Todo.find({text}).then((todos)=>{
+          expect(todos.length).toBe(1);
+          done();
+      }).catch((e)=>done(e));
   });
 });
 it('should not create todo with invalid body data', (done) => {
@@ -37,8 +42,10 @@ it('should not create todo with invalid body data', (done) => {
       .expect(400)
       .end((err, res) => {
          if(res.body.errors.text.name==='ValidatorError'){
-          //console.log('My Error -->',res.body);
-          return done();
+            Todo.find({}).then((todos)=>{
+                expect(todos.length).toBe(2);
+                done();
+            }).catch((e)=>done(e));
          }else{
         return done(new Error('Failed because the validation error was not thrown'));
          }
@@ -54,17 +61,10 @@ it('should not create todo with invalid body data', (done) => {
       
       request(app)
       .get('/todos')
-      .send()
       .expect(200)
-      .end((err,res)=>{
-          if(err){
-              return done(err);
-          }
-         else{
-              console.log(res.body.todos);
-              done();
-         }
-           
-          })
+      .expect((res)=>{
+          expect(res.body.todos.length).toBe(2);
+      }).end(done);
+    
       });
     });
