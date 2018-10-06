@@ -1,5 +1,6 @@
 var  express = require('express');  // chapter 76 start
 var bodyParser = require('body-parser');
+var {ObjectID} = require('mongodb');
 //local imports
 var {mongoose} = require('./db/mongoose');
 var {Todo} = require('./models/todo');
@@ -10,8 +11,24 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 //GET todos
-
-app.get("/todos",(req,res)=>{
+app.get('/todos/:id',(req,res)=>{
+   var id = req.params.id;
+   if(!ObjectID.isValid(id))
+   {
+    return res.status(404).send("Not a valid Id");
+   }
+        Todo.findById(id).then((todo)=>{
+            if(!todo){
+                return res.status(404).send();
+            }
+            res.status(200).send({todo});
+        }).catch((err)=>{
+            console.log(err);
+             res.status(404).send(err);
+        });
+    
+});
+app.get("/todos",(req,res)=>{ 
     Todo.find().then((todos)=>{
        res.status(200).send({todos});
     },(err)=>{
