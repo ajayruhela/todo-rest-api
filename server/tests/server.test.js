@@ -111,3 +111,36 @@ it('should not create todo with invalid body data', (done) => {
                 .end(done);
               });
         });
+
+
+        // delete todos/id
+    describe('DELETE /todos/id',()=>{
+
+        it('should get 404 due to invalid id',(done)=>{
+          
+          request(app)
+          .get('/todos/5bb68ebe9c961127cc6509b')
+          .expect(404)
+          .end(done);
+          });
+        
+        
+        it('should get 404 as no to do with this id',(done)=>{
+          
+            request(app)
+            .get('/todos/5bb68ebe9c961127cc6509b6')
+            .expect(404)
+            .end(done);
+          });
+
+        it('should get 200 and the deleted todo item ',(done)=>{
+          
+                request(app)
+                .get(`/todos/${todos[0]._id.toHexString()}`)
+                .expect(200)
+                .expect((res)=>{
+                    expect(res.body.todo.text).toBe(todos[0].text)
+                })
+                .end(done);
+              });
+        });

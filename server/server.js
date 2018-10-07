@@ -50,6 +50,23 @@ app.post("/todos",(req,res)=>{
     });
 });
 
+//Delete  /todos/id
+app.delete("/todos/:id",(req,res)=>{
+    var id = req.params.id;
+   if(!ObjectID.isValid(id))
+   {
+    return res.status(404).send("Not a valid Id");
+   }
+        Todo.findByIdAndRemove(id).then((todo)=>{
+            if(!todo){
+                return res.status(404).send();
+            }
+            res.status(200).send({todo});
+        }).catch((err)=>{
+            console.log(err);
+             res.status(404).send(err);
+        });
+});
 
 app.listen(port,()=>{
     console.log(`server is listening on port ${port}`);
