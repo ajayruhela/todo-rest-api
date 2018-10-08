@@ -2,11 +2,12 @@ const _ = require('lodash');
 const  express = require('express');  // chapter 76 start
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
+
 //local imports
 var {mongoose} = require('./db/mongoose');
 var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
-
+var {authenticate} = require('./middleware/authenticate');
 var  app = express();
 const port = process.env.PORT || 3000;
 
@@ -122,6 +123,13 @@ app.post("/users",(req,res)=>{
         return res.status(400).send(e);
     });
 });
+
+// auth
+
+app.get("/users/me",authenticate,(req,res)=>{
+    res.send(req.user);
+});
+
 
 // GET /users
 app.get("/users",(req,res)=>{ 
