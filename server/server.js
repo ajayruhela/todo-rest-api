@@ -96,51 +96,45 @@ app.patch('/todos/:id', (req, res) => {
     })
   });
   
-  
+  //POST user
+//   app.post("/users",(req,res)=>{
+//     var body = _.pick(req.body, ['name', 'email','password']);
+//     var user = new User(body);
+//    user.save().then((user)=>{
+//         //return user.generateAuthToken()
+//       return res.status(200).send({user});
+//     },(err)=>{
+//         //console.log(err);
+//        return res.status(400).send(err);
+//     });
+// });
+
+// POST /users with token
+
+app.post("/users",(req,res)=>{
+    var body = _.pick(req.body, ['name', 'email','password']);
+    var user = new User(body);
+   user.save().then(()=>{
+        return user.generateAuthToken();
+    }).then((token)=>{
+        res.header('x-auth', token).send(user);
+    }).catch((e)=>{
+        return res.status(400).send(e);
+    });
+});
+
+// GET /users
+app.get("/users",(req,res)=>{ 
+    User.find().then((users)=>{
+       res.status(200).send({users});
+    },(err)=>{
+        //console.log(err);
+        res.status(400).send(err);
+    });
+});
 app.listen(port,()=>{
     console.log(`server is listening on port ${port}`);
 });
 
 module.exports={app};
-// create a todo object
-// var newTodo = new Todo({text:'Write an Article'});
 
-// newTodo.save().then((doc)=>{
-//     console.log('saved todo ',doc);
-// },(err)=>{
-//     console.log('unable to save todo', err);
-// });
-
-// var otherTodo = new Todo({
-//     text:'Write a new Article',
-//     completed : true,
-//     completedAt : 123
-// });
-
-// otherTodo.save().then((doc)=>{
-//     console.log('saved todo ',doc);
-// },(err)=>{
-//     console.log('unable to save todo', err);
-// });
-
-
-// // create user
-// var newUser = new User({
-//     email:'ajay@gmail.com'
-// });
-// // save
-// newUser.save().then((doc)=>{
-//     console.log('saved todo ',doc);
-// },(err)=>{
-//     console.log('unable to save todo', err);
-// });
-
-// // this will fail
-// var newUser = new User({
-//     email:''  // or {}
-// });
-// newUser.save().then((doc)=>{
-//     console.log('saved todo ',doc);
-// },(err)=>{
-//     console.log('unable to save todo', err);
-// });

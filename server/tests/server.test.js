@@ -182,7 +182,7 @@ it('should not create todo with invalid body data', (done) => {
                 })
                 .end(done);
               });
-              it('should clear the completedAt when not completed ',(done)=>{
+        it('should clear the completedAt when not completed ',(done)=>{
                 var hexID = todos[0]._id.toHexString();
                 var text = 'update from local test2'
                       request(app)
@@ -198,5 +198,5 @@ it('should not create todo with invalid body data', (done) => {
                           expect(res.body.todo.completedAt).toBeNull();
                       })
                       .end(done);
-                    });
+              });
         });
